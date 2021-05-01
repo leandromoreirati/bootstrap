@@ -169,7 +169,7 @@ if [ -z $GOOGLE_CHROME ]; then
 
 $(which wget) https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -O /tmp/google-chrome-stable_current_amd64.deb
 
-$(sudo dpkg) -i /tmp/google-chrome-stable_current_amd64.deb
+$(which sudo) $(which apt) install -y /tmp/google-chrome-stable_current_amd64.deb
 fi
 
 echo "# -------------- INSTALL KVM ------------- #"
