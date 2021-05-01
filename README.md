@@ -92,7 +92,9 @@ $ git clone git@github.com:leandromoreirati/bootstrap.git
 ```
 ### Runing Script
 ```bash
-$ ./bootstrap.sh
+$ ./bootstrap.sh <YOUR_USER>
+ 
+ Exemple:
+ $ ./bootstrap.sh john
+
 ```
-
-
