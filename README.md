@@ -17,12 +17,9 @@ The list of plugins to be installed is in the file list.txt, currently the follo
 * [helm](Helm)
 * [helm-ct](https://github.com/tablexi/asdf-helm-ct)
 * [istioctl](https://github.com/rafik8/asdf-istioctl)
-* [jq](https://github.com/focused-labs/asdf-jq)
 * [kops](https://github.com/Antiarchitect/asdf-kops)
 * [kubectl](https://github.com/Banno/asdf-kubectl)
 * [minikube](https://github.com/alvarobp/asdf-minikube)
-* [minishift](https://github.com/sqtran/asdf-minishift)
-* [oc](https://github.com/sqtran/asdf-oc)
 * [packer](https://github.com/asdf-community/asdf-hashicorp)
 * [python](https://github.com/danhper/asdf-python)
 * [tekton-cli](https://github.com/johnhamelink/asdf-tekton-cli)
@@ -58,26 +55,31 @@ Before running the **bootstrap** script, we need to install and configure the fo
 * sudo
 * [oh my zsh](https://ohmyz.sh/#install)
 
-## 1. Instaling and configuring sudo
+## 1. Instaling and configuring package
 
 ```bash
-$ sudo apt-get update
-$ sudo apt-get install sudo
+# apt-get update
+# apt-get install sudo curl zsh git
 ```
  ### Configuring sudo
+The commands below must be run as root, or as a user with elevated privileges.
+
 ```bash
-$ sudo visudo
+# visudo
 %<GROUP> ALL=(root) NOPASSWD:ALL
 ```
 ### Create group
 ```bash
-$ groupadd <GROUP>
+# groupadd <GROUP>
 ```
 ### Add user to group
 ```bash
-$ gpasswd -a $USER <GROUP>
+# gpasswd -a $USER <GROUP>
 ```
+
+**Reboot your system**
 ## 2 . Install oh-my-zsh
+The commands below must be run your user.
 
 ```bash
 $ sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
