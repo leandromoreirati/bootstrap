@@ -7,7 +7,6 @@ hadolint|https://github.com/looztra/asdf-hadolint|v1.19.0
 helm-ct|https://github.com/tablexi/asdf-helm-ct.git
 helm|https://github.com/Antiarchitect/asdf-helm.git
 istioctl|https://github.com/rafik8/asdf-istioctl.git|1.8.0
-jq|https://github.com/focused-labs/asdf-jq.git
 kops|https://github.com/Antiarchitect/asdf-kops.git
 kubectl|https://github.com/Banno/asdf-kubectl.git|1.19.4
 minikube|https://github.com/alvarobp/asdf-minikube.git
