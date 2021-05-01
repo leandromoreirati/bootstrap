@@ -10,6 +10,7 @@ DOCKER_GPG_KEY=`sudo ls -l /usr/share/keyrings/docker-archive-keyring.gpg | awk 
 ASDF_INSTALL_DIR=`ls -la /home/lmoreira/| grep ".asdf"| awk '{print $9}'`
 OH_MY_ZSH_INSTALL_DIR=`find /home/lmoreira/ -type d -iname ".oh-my-zsh"`
 VIRTUALIZATION_EXTENSION_ENABLE=`egrep -c '(vmx|svm)' /proc/cpuinfo`
+GOOGLE_CHROME=`sudo dpkg -l | grep chrome | awk '{print $2}'`
 
 set -o pipefail
 
@@ -162,29 +163,32 @@ if [  -z $MICROSOFT_GPG_KEY ]; then
     $(which sudo) $(which apt-get) install -y code
 fi
 
-echo "# -------------- INSTALL KGOOGLE CHROME ------------- #"
+set -x
+echo "# -------------- INSTALL GOOGLE CHROME ------------- #"
+if [ -z $GOOGLE_CHROME ]; then
+
 $(which wget) https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -O /tmp/google-chrome-stable_current_amd64.deb
 
 $(sudo dpkg) -i /tmp/google-chrome-stable_current_amd64.deb
+fi
 
 echo "# -------------- INSTALL KVM ------------- #"
 if [  $VIRTUALIZATION_EXTENSION_ENABLE  != 0 ]; then 
-
     $(which sudo) $(which apt-get) install -y qemu-kvm libvirt-clients libvirt-daemon-system bridge-utils virtinst libvirt-daemon virt-manager 
     
     $(which sudo) $(which virsh) net-start default
 
     $(which sudo) $(which virsh) net-autostart default
 
-    $(which sudo) $(which modprobe) vhost_net
+    $(which sudo) modprobe vhost_net
 
     $(which echo) "vhost_net" | sudo  tee -a /etc/modules
 
     $(which lsmod) | grep vhost
 
-    $(which sudo) $(which adduser) $USER libvirt
+    $(which sudo) $(which gpasswd) -a $1 libvirt
 
-    $(which sudo) $(which adduser) $USER libvirt-qemu
+    $(which sudo) $(which gpasswd) -a  $1 libvirt-qemu
 
     $(which sudo) $(which newgrp) libvirt
 
@@ -195,3 +199,5 @@ else
   echo "Virtualization support disable, verify your computer bios!"
 
 fi
+
+echo "$1"
