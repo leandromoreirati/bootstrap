@@ -15,11 +15,8 @@ set -o pipefail
 
 PACKET_LIST="apt-transport-https \
                               ca-certificates \
-                              curl \
                               vim \
                               wget \
-                              zsh \
-                              gnupg \
                               gnupg2 \
                               jq \
                               lsb-release"
@@ -33,7 +30,6 @@ echo "set mouse=r" >> ~/.vimrc
 
 echo "# -------------- INSTALL OH MY ZSH -------------- #"
 if [ -z $OH_MY_ZSH_INSTALL_DIR ] ; then
-  #sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
   $(which git) clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting 
   $(which git) clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions 
@@ -41,7 +37,7 @@ fi
 
 echo "# -------------- INSTALL ASDF -------------- #"
 if [ -d "$ASDF_INSTALL_DIR" ] ; then
-    #git clone https://github.com/asdf-vm/asdf.git ~/.asdf
+    git clone https://github.com/asdf-vm/asdf.git ~/.asdf
     echo " " >> $ZSH_FILE
     echo "# add to your Shell" >> $ZSH_FILE
     echo ". $HOME/.asdf/asdf.sh" >> $ZSH_FILE
@@ -67,7 +63,6 @@ for list in ` $(which cat) $ASDF_PLUGIN_LIST_FILE | awk '{ print $1"  "$2"  "$3 
   PLUGIN_URL=`echo $list | awk -F  "|" '{ print $2} '`
   PLUGIN_VERSION=`echo $list | awk -F  "|" '{ print $3} '`
 
-          #echo $PLUGIN $PLUGIN_URL $PLUGIN_VERSION
     if [ ! -z `asdf list $PLUGIN` ] ; then
 
       echo "Plugin $PLUGIN installed!"
@@ -167,27 +162,15 @@ if [  -z $MICROSOFT_GPG_KEY ]; then
     $(which sudo) $(which apt-get) install -y code
 fi
 
+echo "# -------------- INSTALL KGOOGLE CHROME ------------- #"
+$(which wget) https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -O /tmp/google-chrome-stable_current_amd64.deb
+
+$(sudo dpkg) -i /tmp/google-chrome-stable_current_amd64.deb
+
 echo "# -------------- INSTALL KVM ------------- #"
-if [ ! -z $VIRTUALBOX ]; then
-
-  echo "Virtualbox Installed!"
-
-else
-
-  $(which wget) -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | $(which sudo) $(which apt-key) add -
-  $(which wget)  -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | $(which sudo) $(which apt-key) add -
-
-  echo "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian buster contrib" | sudo tee /etc/apt/sources.list.d/virtualbox.list
-
-
-   $(which sudo) $(which apt-get) install linux-headers-$(uname -r) dkms
-   
- fi
-
-
 if [  $VIRTUALIZATION_EXTENSION_ENABLE  != 0 ]; then 
 
-    $(which sudo) $(which apt-get) install qemu-kvm libvirt-clients libvirt-daemon-system bridge-utils virtinst libvirt-daemon virt-manager 
+    $(which sudo) $(which apt-get) install -y qemu-kvm libvirt-clients libvirt-daemon-system bridge-utils virtinst libvirt-daemon virt-manager 
     
     $(which sudo) $(which virsh) net-start default
 
@@ -203,9 +186,9 @@ if [  $VIRTUALIZATION_EXTENSION_ENABLE  != 0 ]; then
 
     $(which sudo) $(which adduser) $USER libvirt-qemu
 
-    $(which newgrp) libvirt
+    $(which sudo) $(which newgrp) libvirt
 
-    $(which newgrp) libvirt-qemu
+   $(which sudo) $(which newgrp) libvirt-qemu
 
 else
 
