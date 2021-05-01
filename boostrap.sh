@@ -163,7 +163,6 @@ if [  -z $MICROSOFT_GPG_KEY ]; then
     $(which sudo) $(which apt-get) install -y code
 fi
 
-set -x
 echo "# -------------- INSTALL GOOGLE CHROME ------------- #"
 if [ -z $GOOGLE_CHROME ]; then
 
